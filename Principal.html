@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>1313 CNC WOOD ROUTER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: url('fondo-cnc-1313.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            height: 100%;
+        }
+        .container {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            background: rgba(255,255,255,0.2);
+            padding-top: 15px;
+            box-sizing: border-box;
+            height: 100vh;
+            position: relative;
+        }
+        h1 {
+            color: #222;
+            background: rgba(255,255,255,0.8);
+            padding: 24px 32px;
+            border-radius: 16px;
+            font-size: 2.5rem;
+            margin: 0 auto 24px auto;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.14);
+            text-align: center;
+            max-width: 600px;
+        }
+        .botones-wrap {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+        .col-botones {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding: 0 2vw;
+        }
+        .col-botones.left {
+            align-items: flex-start;
+        }
+        .col-botones.right {
+            align-items: flex-end;
+            position: relative;
+        }
+        .btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255,255,255,0.85);
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px 0 rgba(0,0,0,0.11);
+            cursor: pointer;
+            padding: 8px 6px;
+            text-decoration: none;
+            transition: transform 0.18s;
+            width: 100px;
+            position: relative;
+        }
+        .btn:hover {
+            transform: scale(1.06);
+            background: rgba(255,255,255,1);
+        }
+        .btn img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            margin-bottom: 7px;
+        }
+        .btn span {
+            color: #222;
+            font-size: 0.92rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        /* --- Tooltip para los botones derechos --- */
+        .btn-tooltip-right {
+            position: absolute;
+            right: 110%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(34,34,34,0.97);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 0.97rem;
+            min-width: 160px;
+            max-width: 230px;
+            white-space: pre-line;
+            z-index: 999;
+            pointer-events: none;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            text-align: left;
+            display: none;
+        }
+        .btn.right-btn:hover .btn-tooltip-right,
+        .btn.right-btn:focus .btn-tooltip-right {
+            display: block;
+        }
+        .btn.right-btn {
+            align-items: center;
+            position: relative;
+        }
+        /* --- BOTÓN DE SIMULACIÓN ALARGADO --- */
+        .btn-simulacion {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0b7cff;
+            color: #fff;
+            font-size: 1.18rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 24px;
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.12);
+            text-decoration: none;
+            padding: 18px 0;
+            width: 340px;
+            letter-spacing: 1.2px;
+            transition: background 0.18s, transform 0.14s;
+            margin: 0 auto 36px auto;
+        }
+        .push-bottom {
+            margin-top: auto;
+        }
+        .btn-simulacion:hover {
+            background: #1453b7;
+            transform: translateY(-2px) scale(1.025);
+        }
+        /* --- BOTONES CIRCULARES PEQUEÑOS CON TOOLTIP --- */
+        .botones-circulares {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99;
+        }
+        .circle-btn {
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            background: #0b7cff;
+            color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: background 0.18s, box-shadow 0.18s;
+            pointer-events: auto;
+        }
+        .circle-btn:hover {
+            background: #1453b7;
+            box-shadow: 0 4px 16px 0 rgba(0,0,0,0.23);
+        }
+        .circle-btn .icon {
+            user-select: none;
+            pointer-events: none;
+        }
+        .tooltip-text {
+            display: none;
+            position: absolute;
+            left: 120%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(34,34,34,0.97);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 0.97rem;
+            min-width: 240px;
+            max-width: 240px;
+            white-space: pre-line;
+            z-index: 999;
+            pointer-events: none;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            text-align: left;
+        }
+        .circle-btn:hover .tooltip-text,
+        .circle-btn:focus .tooltip-text {
+            display: block;
+        }
+        @media (max-width: 900px) {
+            .botones-wrap {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 28px;
+            }
+            .col-botones.left,
+            .col-botones.right {
+                align-items: center;
+                padding: 0;
+            }
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.4rem;
+                padding: 14px 8px;
+            }
+            .btn {
+                width: 90vw;
+                max-width: 160px;
+            }
+            .btn img {
+                width: 30px;
+                height: 30px;
+            }
+            .botones-wrap {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            .col-botones {
+                gap: 10px;
+                padding: 0;
+                align-items: center;
+            }
+            .btn-simulacion {
+                width: 90vw;
+                min-width: 160px;
+                font-size: 1rem;
+                padding: 16px 0;
+            }
+            .btn-tooltip-right {
+                right: auto;
+                left: 110%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>1313 CNC WOOD ROUTER</h1>
+
+        <!-- BOTONES CIRCULARES PEQUEÑOS -->
+        <div class="botones-circulares">
+            <div class="circle-btn tooltip" style="top:250px; left:50vw;">
+                <span class="icon"></span>
+                <span class="tooltip-text">
+                    <strong>Servo motor eje X</strong><br>
+                    Motor encargado de desplazar el puente o gantry de la máquina a lo largo del eje X (de izquierda a derecha). Este movimiento posiciona la herramienta de corte en cualquier punto horizontal sobre la pieza de madera, permitiendo realizar cortes transversales precisos.
+                </span>
+            </div>
+            <div class="circle-btn tooltip" style="top:470px; left:27vw;">
+                <span class="icon"></span>
+                <span class="tooltip-text">
+                    <strong>Servo motor eje Y</strong><br>
+                    Motor responsable de mover el cabezal y la herramienta de corte a lo largo del eje Y (de adelante hacia atrás). Gracias a este desplazamiento, la CNC puede trazar trayectorias para crear formas complejas y figuras sobre la madera.
+                </span>
+            </div>
+            <div class="circle-btn tooltip" style="top:250px; left:36vw;">
+                <span class="icon"></span>
+                <span class="tooltip-text">
+                    <strong>Riel de guía eje X</strong><br>
+                    Elemento estructural sobre el cual se desplaza el puente en el eje X. Estos rieles proporcionan estabilidad, alineación y precisión durante el movimiento horizontal, asegurando que los cortes sean uniformes y exactos en la madera.
+                </span>
+            </div>
+            <div class="circle-btn tooltip" style="top:370px; left:49vw;">
+                <span class="icon"></span>
+                <span class="tooltip-text">
+                    <strong>Spindle</strong><br>
+                    El spindle es el motor rotativo que hace girar la fresa o herramienta de corte a alta velocidad, permitiendo trabajar sobre madera. Es fundamental para realizar cortes limpios.
+                </span>
+            </div>
+            <div class="circle-btn tooltip" style="top:525px; left:45vw;">
+                <span class="icon"></span>
+                <span class="tooltip-text">
+                    <strong>Botón de paro de emergencia</strong><br>
+                    Botón de seguridad ubicado en la estructura de la máquina. Al presionarlo, detiene de inmediato todos los movimientos y operaciones de la CNC, protegiendo tanto al operador como al equipo ante cualquier situación de riesgo o emergencia durante el trabajo.
+                </span>
+            </div>
+            <div class="circle-btn tooltip" style="top:500px; left:35vw;">
+                <span class="icon"></span>
+                <span class="tooltip-text">
+                    <strong>Riel de guía eje Y</strong><br>
+                    Componente mecánico sobre el cual se desplaza el cabezal de corte en la dirección Y (adelante y atrás). Este riel garantiza que el movimiento del cabezal sea suave, estable y perfectamente alineado, permitiendo que la herramienta siga trayectorias precisas al trabajar la madera.
+                </span>
+            </div>
+        </div>
+
+        <div class="botones-wrap">
+            <div class="col-botones left">
+                <a class="btn" href="usuario.pdf" target="_blank">
+                    <img src="img/icono-usuario.png" alt="Manual de usuario">
+                    <span>Manual de usuario</span>
+                </a>
+                <a class="btn" href="tecnico.pdf" target="_blank">
+                    <img src="img/icono-tecnico.png" alt="Manual técnico">
+                    <span>Manual técnico</span>
+                </a>
+                <a class="btn" href="informe.pdf" target="_blank">
+                    <img src="img/icono-info.png" alt="Información">
+                    <span>Información</span>
+                </a>
+                <a class="btn" href="teoria.pdf" target="_blank">
+                    <img src="img/icono-teoria.png" alt="Teoría">
+                    <span>Teoría</span>
+                </a>
+            </div>
+            <div class="col-botones right">
+                <div class="btn right-btn" tabindex="0">
+                    <span>INSTRUCCIONES</span>
+                    <div class="btn-tooltip-right">En los siguientes recuadros, se detalla la función de los botones y funciones dentro del simulador para una mejor comprensión antes de comenzar la práctica.</div>
+                </div>
+                <div class="btn right-btn" tabindex="0">
+                    <span>Coordenadas</span>
+                    <div class="btn-tooltip-right">Cuadros de texto en los que se deben ingresar las coordenadas en los ejes x,y,z. Son los vertices en los que se haran los cortes, debe ser ingresado un punto a la vez.</div>
+                </div>
+                <div class="btn right-btn" tabindex="0">
+                    <span>Agregar</span>
+                    <div class="btn-tooltip-right">Una vez ingresado un punto en las coordenadas, se debe seleccionar esta opcion para agregarlas a la lista de puntos que seran trazados una vez que inicie el proceso de corte.</div>
+                </div>
+                <div class="btn right-btn" tabindex="0">
+                    <span>Cortar</span>
+                    <div class="btn-tooltip-right">Una vez ingresador todas las coordenadas a la lista, al presionar este boton iniciara el proceso de corte pasando por cada uno de los puntos ingresados.</div>
+                </div>
+                <div class="btn right-btn" tabindex="0">
+                    <span>G-code</span>
+                    <div class="btn-tooltip-right">Al presionar esta opción se cargará un g-code predeterminado como ejemplo, comenzando el corte de un cubo.</div>
+                </div>
+                <div class="btn right-btn" tabindex="0">
+                    <span>Ingresar G-code</span>
+                    <div class="btn-tooltip-right">Espacio para ingresar el G-code que es el lenguaje estandar para controlar la máquina CNC.</div>
+                </div>
+                <div class="btn right-btn" tabindex="0">
+                    <span>Aceptar</span>
+                    <div class="btn-tooltip-right">Al ingresar el G-code en la opcion anterior, ese boton comenzará el proceso de corte. </div>
+                </div>
+                <!-- BOTÓN REEMPLAZADO, ahora solo existe este -->
+                <a class="btn right-btn" href="ejemplos-gcode.pdf" target="_blank" tabindex="0" style="width: 160px; font-weight:600;">
+                    Ejemplos G-code
+                    <div class="btn-tooltip-right">Descarga un documento con 30 ejemplos de G-code para practicar diferentes figuras en el simulador.</div>
+                </a>
+            </div>
+        </div>
+        <!-- BOTÓN ALARGADO ABAJO DE TODO -->
+        <a class="btn-simulacion push-bottom" href="https://simulador-cncrouter1313.netlify.app/" target="_blank">
+            IR A LA SIMULACIÓN
+        </a>
+    </div>
+</body>
+</html>
